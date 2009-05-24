@@ -1,0 +1,6 @@
+#
+#
+#
+EXTRA_CFLAGS = $(NDKCFLAGS) -Iarch/trimedia/bsp/tmbslTmOnly/ -DTMFL_TMONLY_AUTO_CACHE_LIMIT=1 -DTMFL_TMONLY_RSE_EXCEPTION=0 -DTMFL_TMBSLTMONLY_NOBIS=0 -DTMFL_OS_IS_NOPSOS=1
+
+obj-y += tmbslTmOnly_IntDrv.o tmbslTmOnly.o

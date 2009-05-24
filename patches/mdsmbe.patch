@@ -1,0 +1,68 @@
+Index: linux/arch/trimedia/board-mbe/mdsbslLcp.c
+===================================================================
+--- linux.orig/arch/trimedia/board-mbe/mdsbslLcp.c
++++ linux/arch/trimedia/board-mbe/mdsbslLcp.c
+@@ -302,9 +302,9 @@ extern tmErrorCode_t mdsbslLcpBoardRegis
+ // BSL Board Specific Component Defines/Data Structures
+ //-----------------------------------------------------------------------------
+ //
+-#if !defined(TMFL_LCP_EXCLUDE_NORFLASH) || !TMFL_LCP_EXCLUDE_NORFLASH
+-
+-#include "tmbslNorFlash.h"              // DVP Nor Flash interface file
++#if (!defined(TMFL_LCP_EXCLUDE_NANDFLASH) || !TMFL_LCP_EXCLUDE_NANDFLASH) || \
++    (!defined(TMFL_LCP_EXCLUDE_NORFLASH) || !TMFL_LCP_EXCLUDE_NORFLASH) || \
++    (!defined(TMFL_LCP_EXCLUDE_ATA_XIO) || !TMFL_LCP_EXCLUDE_ATA_XIO)
+ 
+ #if !defined(PCI_SETUP)
+      #define PCI_SETUP           0x00040010
+@@ -313,6 +313,12 @@ extern tmErrorCode_t mdsbslLcpBoardRegis
+ #define XIO_ENABLE          ((1<<22)|(1<<17))
+ #define XIO_32MB            (4<<18)
+ 
++#endif
++
++#if !defined(TMFL_LCP_EXCLUDE_NORFLASH) || !TMFL_LCP_EXCLUDE_NORFLASH
++
++#include "tmbslNorFlash.h"              // DVP Nor Flash interface file
++
+ static tmhwXioProfileSetup_t   xioProfile0 = {
+     True,               // enabled
+    // tmhwXioSize32MB,    // size---why 32MB? only has 16 MB; this corresponds
+@@ -679,27 +685,6 @@ tmbslBoardRegister (
+     // Register the BSL ethernet PHY driver for this board
+     tmbslPhyRegisterComponent(tmUnit0,&gtmbslPhyInterface);
+ 
+-#if !TMFL_LCP_EXCLUDE_ATA_XIO
+-
+-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-    // We include support for the ItmbslAta interface, implemented by
+-    // tmbslAtaXio.
+-
+-    tmbslCorePrintf(
+-        tmbslCoreDbgDevMem,
+-        tmbslCoreDbgFlagNone,
+-        "mdsbslLcp BSL: Registering IDE channel"
+-    );
+-
+-    tmdlAtaRegisterComponent(
+-        (void (*)()) tmbslAtaXioRegisterChannel,
+-        TMBSL_LCP_IDE_GPIO_INTERRUPT_PIN,
+-        "GPIO0_10",
+-        tmhwXioSel1
+-    );
+-
+-#endif  // !TMFL_LCP_EXCLUDE_ATA_XIO
+-
+ #if (TMFL_LCP_EXCLUDE_AUDIO == 0)             //Audio
+     status = mdsbslLcp_AudioInit ();
+     if (status != TM_OK)
+@@ -869,7 +854,8 @@ tmbslBoardHwInit (
+ 
+ 
+ #if (!defined(TMFL_LCP_EXCLUDE_NANDFLASH) || !TMFL_LCP_EXCLUDE_NANDFLASH) || \
+-    (!defined(TMFL_LCP_EXCLUDE_NORFLASH) || !TMFL_LCP_EXCLUDE_NORFLASH)
++    (!defined(TMFL_LCP_EXCLUDE_NORFLASH) || !TMFL_LCP_EXCLUDE_NORFLASH) || \
++    (!defined(TMFL_LCP_EXCLUDE_ATA_XIO) || !TMFL_LCP_EXCLUDE_ATA_XIO)
+     {
+         /*
+           Setup XIO address space:

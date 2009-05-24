@@ -1,0 +1,137 @@
+#############################################################################
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+#############################################################################
+
+mainmenu "uClinux/v850 (w/o MMU) Kernel Configuration"
+
+config MMU
+       	bool
+	default n
+config UID16
+	bool
+	default n
+config RWSEM_GENERIC_SPINLOCK
+	bool
+	default y
+config RWSEM_XCHGADD_ALGORITHM
+	bool
+	default n
+config GENERIC_CALIBRATE_DELAY
+	bool
+	default y
+
+# Turn off some random 386 crap that can affect device config
+config ISA
+	bool
+	default n
+config ISAPNP
+	bool
+	default n
+config EISA
+	bool
+	default n
+config MCA
+	bool
+	default n
+
+
+source "mm/Kconfig"
+
+#############################################################################
+
+source init/Kconfig
+
+#############################################################################
+
+menu "Bus options (PCI, PCMCIA, EISA, MCA, ISA)"
+
+#    config PCI
+# 	   bool "PCI support"
+# 	   help
+# 	     Support for PCI bus.
+
+source "drivers/pci/Kconfig"
+
+source "drivers/pcmcia/Kconfig"
+
+source "drivers/pci/hotplug/Kconfig"
+
+endmenu
+
+menu "Executable file formats"
+
+source "fs/Kconfig.binfmt"
+
+endmenu
+
+source "net/Kconfig"
+
+#############################################################################
+
+source "drivers/base/Kconfig"
+
+source drivers/mtd/Kconfig
+
+source drivers/parport/Kconfig
+
+#source drivers/pnp/Kconfig
+
+source drivers/block/Kconfig
+
+#############################################################################
+
+menu "Disk device support"
+
+source "drivers/ide/Kconfig"
+
+source "drivers/scsi/Kconfig"
+
+endmenu
+
+#############################################################################
+
+
+source "drivers/md/Kconfig"
+
+source "drivers/message/fusion/Kconfig"
+
+source "drivers/ieee1394/Kconfig"
+
+source "drivers/message/i2o/Kconfig"
+
+source "drivers/net/Kconfig"
+
+source "drivers/isdn/Kconfig"
+
+#source "drivers/telephony/Kconfig"
+
+#
+# input before char - char/joystick depends on it. As does USB.
+#
+source "drivers/input/Kconfig"
+
+source "drivers/char/Kconfig"
+
+#source drivers/misc/Config.in
+source "drivers/media/Kconfig"
+
+source "fs/Kconfig"
+
+source "drivers/video/Kconfig"
+
+source "sound/Kconfig"
+
+source "drivers/usb/Kconfig"
+
+source "arch/v850/Kconfig.debug"
+
+source "security/Kconfig"
+
+source "crypto/Kconfig"
+
+source "lib/Kconfig"
+
+#############################################################################

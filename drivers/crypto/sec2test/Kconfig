@@ -1,0 +1,19 @@
+#
+# SEC2.x driver testing support
+#
+
+config MPC8xxx_SEC2xTEST
+	bool "SEC test support for MPC8xxx CPU"
+	depends on MPC8xxx_SEC2x
+	default Y
+
+config MPC8349E_SEC20TEST
+	tristate "MPC8349 SEC2.0 testing support"
+	depends on MPC8xxx_SEC2xTEST && MPC8349E_SEC20
+	default M
+
+config MPC854x_SEC21TEST
+	tristate "SEC2.1 testing support"
+	depends on MPC8xxx_SEC2xTEST && MPC854x_SEC21
+	default M
+

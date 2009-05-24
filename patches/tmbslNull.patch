@@ -1,0 +1,28 @@
+Index: linux/arch/trimedia/board-sim/tmbslNull_OsSpecific.c
+===================================================================
+--- linux.orig/arch/trimedia/board-sim/tmbslNull_OsSpecific.c
++++ linux/arch/trimedia/board-sim/tmbslNull_OsSpecific.c
+@@ -549,7 +549,11 @@ tmbslNull_UpdateSystemInfo (
+ 
+             case tmbslCoreCpuTypeTM:
+             {
++#if defined(__TCS_pnx1005__) && defined(__TCS_ttisim__)
++		cpuClockFreq=0x8f0d180;
++#else
+                 timToCycles(1000000000, &cpuClockFreq);
++#endif 
+             }
+             break;
+ 
+@@ -623,7 +627,11 @@ tmbslNull_GetTicksPerSec (
+ {
+     UInt32  cycles;
+ 
++#if defined(__TCS_pnx1005__) && defined(__TCS_ttisim__)
++    cycles=0x8f0d180;
++#else
+     timToCycles(1000000000, &cycles);
++#endif 
+     *pTicksPerSec = cycles;
+     return (TM_OK);
+ 

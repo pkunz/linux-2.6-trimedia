@@ -1,0 +1,118 @@
+config 85xx
+	bool
+	depends on E500
+	default y
+
+config PPC_INDIRECT_PCI_BE
+	bool
+	depends on 85xx
+	default y
+
+menu "Freescale 85xx options"
+	depends on E500
+
+choice
+	prompt "Machine Type"
+	depends on 85xx
+	default MPC8540_ADS
+
+config MPC8540_ADS
+	bool "Freescale MPC8540 ADS"
+	help
+	  This option enables support for the MPC 8540 ADS evaluation board.
+
+config MPC8548_CDS
+	bool "Freescale MPC8548 CDS"
+	help
+	  This option enables support for the MPC8548 CDS evaluation board.
+
+config ARCADIA_X3
+	bool "Arcadia X3 Board"
+	depends on MPC8548_CDS
+	default y
+
+config MPC8555_CDS
+	bool "Freescale MPC8555 CDS"
+	help
+	  This option enables support for the MPC8555 CDS evaluation board.
+
+config MPC8560_ADS
+	bool "Freescale MPC8560 ADS"
+	help
+	  This option enables support for the MPC 8560 ADS evaluation board.
+
+config GDA_G8500
+	bool "GDA RMC-G8500"
+	help
+	  This option enables support for the GDA RMC-G8500 MPC8540 evaluation board.
+
+config MPC8540_EVAL
+        bool "Freescale MPC8540 EVAL"
+        help
+          This option enables support for the MPC8540EVAL board.
+
+config SBC8560
+	bool "WindRiver PowerQUICC III SBC8560"
+	help
+	  This option enables support for the WindRiver PowerQUICC III 
+	  SBC8560 board.
+
+config STX_GP3
+	bool "Silicon Turnkey Express GP3"
+	help
+	  This option enables support for the Silicon Turnkey Express GP3
+	  board.
+
+endchoice
+
+# It's often necessary to know the specific 85xx processor type.
+# Fortunately, it is implied (so far) from the board type, so we
+# don't need to ask more redundant questions.
+config MPC8540
+	bool
+	depends on MPC8540_EVAL || MPC8540_ADS || GDA_G8500
+	default y
+
+config MPC8548
+	bool
+	depends on MPC8548_CDS
+	default y
+
+config MPC854x
+	bool
+	depends on MPC8540 || MPC8548
+	default y
+
+config MPC8555
+	bool
+	depends on MPC8555_CDS
+	default y
+
+config MPC8560
+	bool
+	depends on SBC8560 || MPC8560_ADS || STX_GP3
+	default y
+
+config 85xx_PCI2
+	bool "Support for 2nd PCI host controller"
+	depends on MPC8555_CDS
+	default y
+
+config PEX
+	bool "PCI Express support"
+	depends on PCI && MPC8548 && ARCADIA_X3
+	help
+	  !!!!!!!!!! WARNING !!!!!!!!!!
+	  Enables Support for PCI Express
+	  This requires hardware modification to work correctly if your CPU version < 2.0.
+	  and will BREAK the PCI bus
+	  Please contact Freescale for details
+	  Thank You 
+	  !!!!!!!!!! WARNING !!!!!!!!!!
+
+config PPC_GEN550
+	bool
+	depends on MPC8540 || SBC8560 || MPC8555
+	default y
+
+endmenu

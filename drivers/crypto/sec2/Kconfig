@@ -1,0 +1,18 @@
+#
+# SEC2.x support
+#
+
+config MPC8xxx_SEC2x
+	bool "SEC2.x support for MPC8xxx processors"
+	depends on MPC834x || MPC854x
+
+config MPC8349E_SEC20
+	tristate "SEC2.0 support"
+	depends on MPC8xxx_SEC2x && MPC834x
+	default M
+
+config MPC854x_SEC21
+	tristate "SEC2.1 support"
+	depends on MPC8xxx_SEC2x && MPC854x
+	default M
+

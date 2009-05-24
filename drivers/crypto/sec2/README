@@ -1,0 +1,75 @@
+------------------------------------------------------------------------------
+SEC2.x Security Core Device Driver - Release Notes
+version 1.3 August 11, 2005 sec
+------------------------------------------------------------------------------
+Overview:
+
+Release 1.3 contains new functionality for SEC2.1 as implemented on the
+MPC8548E. The following changes are pertinent for this release:
+
+* This is the first release of this driver built to operate with Linux 2.6.
+  All previous versions to this date have been 2.4-compatible only
+
+* ICV-checking for MDHA and for MDHA-dependent single-pass descriptor
+  types has been added. This new feature of SEC2.1 allows the caller to
+  pass in a pointer to an expected signature for a given message.
+  If that signature does not match the one computed for this message,
+  then an error is generated.
+
+* Kasumi (KFHA) stream cipher support has been added to this release,
+  which includes processing capability for f8 stream cipher and f9
+  integrity operations commonly used in 3GPP applications, along with
+  their EDGE A5/3 and GSM A5/3 message format processing mode
+  counterparts.
+
+* SHA224 hash operations have been added alongside the previously existing
+  SHA1 (SHA160), SHA256, and MD5.
+
+* TLS block and stream message processing requests have been added to this
+  release.
+
+* CCMP/SRTP message support exists in this release
+
+* RAID/XOR request types have been added to this release.
+
+* Added improved debug output information for:
+  - buffer viewability
+  - scattered buffer list viewability
+  - SEC descriptor buffer viewability
+
+------------------------------------------------------------------------------
+Limitations:
+
+* This release has been tested on version 2.6.11 of the linux kernel for 
+  PowerPC. No other kernel versions have been verified at this time.
+  
+* Driver has been built with GCC 3.3.3. No other compilers were used.
+  
+* Driver has been verified on MPC8548E silicon on a CDS. No other
+  processors have been verified at this time.
+  
+------------------------------------------------------------------------------
+Known Issues:
+
+* Scripts for creating device inodes must be performed manually at this
+  time. As delivered, the driver requests a dynamic major number upon
+  module initialization. It is up to the operator to manually create a
+  new char device inode typically named /dev/sec2, with the dynamically
+  assigned major number. The minor number should remain zero.
+
+* Driver is not instance-safe.
+
+* Regression testing on 2.4 linux kernels, and on VxWorks 5.5.x has not
+  been attempted at this time.
+
+------------------------------------------------------------------------------
+Release history:
+
+* 1.2   (27 January 2005) - incorporated feedback from acceptance testing
+* 1.1.1 (16 December 2004) - removed some unnecessary diagnostics
+* 1.1.0 (05 December 2004) -  First LinuxPPC release
+* 1.0   (June 2004) - First issue of driver after adaptation from SEC1.0.
+                      VxWorks-only release, tested on MPC8555E only
+
+------------------------------------------------------------------------------
+

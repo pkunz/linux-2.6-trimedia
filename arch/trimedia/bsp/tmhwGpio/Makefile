@@ -1,0 +1,6 @@
+#
+#
+#
+EXTRA_CFLAGS = $(NDKCFLAGS)
+
+obj-$(CONFIG_PNX1500) += pnx1500/

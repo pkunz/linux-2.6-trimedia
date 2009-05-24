@@ -1,0 +1,82 @@
+/* 
+ * Copyright (C) 2009 Gulessoft , Inc. 
+ * Written by Guo Hongruan (guo.hongruan@gulessoft.com)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version
+ * 2 of the License, or (at your option) any later version.
+ */
+
+#ifndef _TRIMEDIA_LAN100_H
+#define _TRIMEDIA_LAN100_H
+
+#include <mmio.h>
+
+#define LAN100_PKT_BUF_SZ    ((1518+3)&(~3))
+
+// Rx Descriptor Control Fields
+#define	ETH_RX_DC_PACKET_SIZE_MASK			0x000007FF
+#define ETH_RX_DC_GEN_INT				0x80000000
+
+// Rx Status Descriptor fileds
+#define	ETH_RX_DS_ENTRY_LVL_MASK			0x000007FF
+#define	ETH_RX_DS_CTRL_FRAME				0x00040000
+#define	ETH_RX_DS_VLAN_FRAME				0x00080000
+#define	ETH_RX_DS_FAIL_FILTER				0x00100000
+#define	ETH_RX_DS_MULTICAST				0x00200000
+#define	ETH_RX_DS_BROADCAST			 	0x00400000
+#define	ETH_RX_DS_CRC_ERROR				0x00800000
+#define	ETH_RX_DS_SYMBOL_ERROR				0x01000000
+#define	ETH_RX_DS_LENGTH_ERROR				0x02000000
+#define	ETH_RX_DS_RANGE_ERROR				0x04000000
+#define	ETH_RX_DS_ALIGNMENT_ERROR			0x08000000
+#define	ETH_RX_DS_OVERRUN				0x10000000
+#define	ETH_RX_DS_NO_DESCRIPTOR				0x20000000
+#define	ETH_RX_DS_LAST					0x40000000
+#define	ETH_RX_DS_ERROR					0x80000000
+
+#define ETH_RX_DS_ALL_ERROR_MASK			0xBF900000
+#define ETH_RX_DS_ONLY_RANGE_ERROR_MASK			0x84000000
+
+// Tx Status Descriptor fileds
+#define	LAN100_TX_DS_COLLISON_CNT_MASK			0x01E00000
+#define	LAN100_TX_DS_DEFER				0x02000000
+#define	LAN100_TX_DS_EXCESS_DEFER			0x04000000
+#define	LAN100_TX_DS_EXCESS_COLLISION			0x08000000
+#define	LAN100_TX_DS_LATE_COLLISION			0x10000000
+#define	LAN100_TX_DS_UNDERRUN				0x20000000
+#define	LAN100_TX_DS_NO_DESCRIPTOR			0x40000000
+#define	LAN100_TX_DS_ERROR				0x80000000
+
+#define LAN100_ETH_INTR_RX_OVERRUN			(u32) 0x00000001
+#define LAN100_ETH_INTR_RX_ERROR			(u32) 0x00000002	
+#define LAN100_ETH_INTR_RX_FINISHED			(u32) 0x00000004
+#define LAN100_ETH_INTR_RX_DONE				(u32) 0x00000008
+#define LAN100_ETH_INTR_TX_UNDERRUN			(u32) 0x00000010
+#define LAN100_ETH_INTR_TX_ERROR			(u32) 0x00000020
+#define LAN100_ETH_INTR_TX_FINISHED			(u32) 0x00000040
+#define LAN100_ETH_INTR_TX_DONE				(u32) 0x00000080
+#define LAN100_ETH_INTR_SOFT				(u32) 0x00001000
+#define LAN100_ETH_INTR_WAKEUP				(u32) 0x00002000
+#define LAN100_ETH_INTR_ALL				(u32) 0x00003FFF
+
+// Autonegotiation mask
+#define LAN100_ETH_CAPABILITY_MASKED		1
+#define LAN100_ETH_CAPABILITY_DECLARED		0
+
+#define LAN100_ETH_B2B_INTERPKTGAP_FD		0x15
+#define LAN100_ETH_B2B_INTERPKTGAP_HD		0x12
+
+#define LAN100_ETH_INT_MASK                      (0x000000FF) 
+
+// Tx Descriptor Control fields
+#define	LAN100_ETH_TX_DC_PACKET_SIZE_MASK	0x000007FF
+#define	LAN100_ETH_TX_DC_OVERRIDE		0x04000000
+#define	LAN100_ETH_TX_DC_HUGE_FRAME		0x08000000
+#define LAN100_ETH_TX_DC_PAD_SHORT_PACKET	0x10000000
+#define LAN100_ETH_TX_DC_APPEND_HW_CRC		0x20000000
+#define LAN100_ETH_TX_DC_LAST_PACKET		0x40000000
+#define LAN100_ETH_TX_DC_GEN_INT		0x80000000
+
+#endif /*_TRIMEDIA_LAN100_H*/

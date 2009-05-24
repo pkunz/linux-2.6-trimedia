@@ -1,0 +1,24 @@
+/* 
+ * Copyright (C) 2009 Gulessoft , Inc. 
+ * Written by Guo Hongruan (guo.hongruan@gulessoft.com)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version
+ * 2 of the License, or (at your option) any later version.
+ */
+#ifndef TMBOOTINFOLOCAL_H 
+#define TMBOOTINFOLOCAL_H
+
+#include <tmBootInfo.h>  
+#include <stddef.h>     
+
+#include <tmFlags.h>   
+#include <tmBootInfoCommon.h> 
+#include <tmInterrupts.h>    
+
+#define TMBOOTINFO_INTERRUPTS_OFF()             intCLEAR_IEN()
+#define TMBOOTINFO_INTERRUPTS_RESTORE(intState) intRESTORE_IEN(intState)
+
+#endif 
+

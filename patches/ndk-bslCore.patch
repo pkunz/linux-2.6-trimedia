@@ -1,0 +1,87 @@
+Index: linux/arch/trimedia/bsp/tmbslCore/tmbslOsSpecific.c
+===================================================================
+--- linux.orig/arch/trimedia/bsp/tmbslCore/tmbslOsSpecific.c
++++ linux/arch/trimedia/bsp/tmbslCore/tmbslOsSpecific.c
+@@ -80,7 +80,7 @@ extern pSOS_CT  PsosCfg;                
+ // NOTE: This TCS symbol inserts the tmbslMgrInit () function into the image
+ //       initialization chain early before the OS has booted.
+ //
+-Int __custom_boot[]= {0, (Int) tmbslMgrInit};
++/*Int __custom_boot[]= {0, (Int) tmbslMgrInit};*/
+ 
+ static ptmbslCoreSystemInfo_t    gpBslSysInfo  = Null; // BSL System info ptr
+ static ptmbslCoreMemRegionInfo_t gpBslMemRegionList = Null; // Mem region ptr
+@@ -172,41 +172,7 @@ tmbslMgrInit (
+     void
+     )
+ {
+-    tmErrorCode_t tmErr;
+-
+-    tmErr = gtmbslMgrActivateCalled
+-    ? TM_OK                     // already done
+-    : (
+-        /*
+-          If gptmbslMgrActivateBoard is nonnull, it means we are
+-          statically linked, and it points at tmbslMgrActivateBoard, so
+-          we just invoke it.
+-
+-          Otherwise, if gptmbslOsSpecificConnector is nonnull, it means
+-          we're dynamically linked, so we invoke it to dynamically find
+-          tmbslMgrActivateBoard and invoke it.
+-
+-          Otherwise, we have some build problem, so we can't do diddly.
+-         */
+-        gtmbslMgrActivateCalled = 1,// only once
+-
+-        gptmbslMgrActivateBoard     // if statically linked
+-        ? gptmbslMgrActivateBoard() // detect/init/register board
+-        : (
+-            gptmbslOsSpecificConnector        // if dynamically linked
+-            ? gptmbslOsSpecificConnector(True)// detect/init/register board
+-            : TMBSL_ERR_MGR_FATAL_NO_COMPONENT// some build problem
+-        )
+-    );
+-
+-    if (tmErr != TM_OK)
+-    {
+-        // Activate didn't work; force call again next time.
+-        gtmbslMgrActivateCalled = 0;
+-    }
+-
+-    return(tmErr);
+-
++	return TM_OK;
+ } // tmbslMgrInit ()
+ 
+ 
+@@ -225,13 +191,7 @@ tmbslMgrExit (
+     void
+     )
+ {
+-    if (gptmbslOsSpecificConnector)         // if dynamically linked
+-    {
+-        gptmbslOsSpecificConnector(False);  // unload board dll
+-    }
+-    gtmbslMgrActivateCalled = 0;
+-    return (tmbslCoreCloseMemAccess ());    // Free system resources
+-
++	return TM_OK;
+ } // tmbslMgrExit ()
+ 
+ 
+@@ -1020,6 +980,7 @@ tmbslCore_printStackInfo(
+     int                         printToDpBuffer
+ )
+ {
++#if 0
+     unsigned long               i, numObjs, bytes;
+     // static to avoid excessive loading of the stack in a fatal error case
+     static struct               psos_obj_entry objs[8*MAX_NUM_TASKS] ;
+@@ -1201,4 +1162,7 @@ tmbslCore_printStackInfo(
+     );
+ 
+     return stackInfoPrintBuffer;
++#else
++    return NULL;
++#endif 
+ }

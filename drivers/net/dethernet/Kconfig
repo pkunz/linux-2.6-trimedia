@@ -1,0 +1,24 @@
+#
+# Dethernet configuration
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version
+# 2 of the License, or (at your option) any later version.
+#
+
+menu "Dethernet device"
+	depends on MPC8540_EVAL && NETDEVICES
+	
+config DETHERNET
+        bool "Dethernet driver support"
+        ---help---
+        Dethernet driver is a simulating ethernet driver for MPC8540EVAL
+        board when it acts as PCI agent device.
+        If MPC8540EVAL board acts as PCI agent and want to communicate
+        with the host through PCI interface, enable this Dethernet driver
+        and there will be an ethernet device named dethx in the system.
+        Corporating with another ethernet device named dethx in the host
+        system, the host and agent can send package to each other.
+
+endmenu

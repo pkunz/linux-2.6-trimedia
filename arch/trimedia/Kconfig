@@ -1,0 +1,329 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "TriMedia Kernel Configuration"
+
+config  TRIMEDIA
+	bool
+	default y
+
+config MMU
+	bool
+	default n
+
+config FPU
+	bool
+	default n
+
+config UID16
+	bool
+	default y
+
+config RWSEM_GENERIC_SPINLOCK
+	bool
+	default y
+
+config RWSEM_XCHGADD_ALGORITHM
+	bool
+	default n
+
+config GENERIC_CALIBRATE_DELAY
+	bool
+	default y
+
+config KTIME_SCALAR
+	bool
+	default y
+
+config SEMAPHORE_SLEEPERS
+	bool
+	default y
+
+config GENERIC_HARDIRQS
+	bool
+	default y
+
+source "init/Kconfig"
+
+menu "Processor type and features"
+
+#
+# TriMedia Host type: tmsim ttisim winnt nohost
+#
+config  OLD_TMSIM
+	bool 
+	default n
+
+config  TTISIM 
+	bool 
+	default n
+
+config  WINNT 
+	bool
+	default n
+
+config  NOHOST
+	bool
+	default n
+
+#
+# TriMedia target type: tm1300 pnx1500 pnx1700 pnx1005
+#
+config  TM1300
+	bool
+	default n
+
+config  PNX1500
+	bool
+	default n
+
+config  PNX1700
+	bool
+	default n
+
+config  PNX1005
+	bool
+	default n
+
+choice 
+	prompt "Target Board"
+	default SIM1500 
+
+config SIM1300
+	bool "TM1300 simulator"
+	select OLD_TMSIM 
+	select TM1300 
+	help
+	  trimedia simulator based on Philips semiconductor's TM1300 processor 
+	  providered in Philips/NXP TCS.
+
+config SIM1500
+	bool "PNX1500 simulator"
+	select TTISIM
+	select PNX1500
+	help
+	  trimedia simulator based on NXP PNX1500 providered in NXP TCS.
+
+config SIM1700
+	bool "PNX1700 simulator"
+	select TTISIM
+	select PNX1700
+	help
+	  trimedia simulator based on NXP PNX1700 providered in NXP TCS.
+
+config SIM1005
+	bool "PNX1005 simulator"
+	select TTISIM
+	select PNX1005
+	help
+	  trimedia simulator based on NXP PNX1005 providered in NXP TCS.
+
+config MBE1500
+	bool "MDS MBE-1500"
+	select NOHOST
+	select PNX1500
+	help
+	  A modular PICMG-based Development System for Stand-alone Portable Media Player 
+	  Devices based on NXP PNX1500 Nexperia Digital Media Processors produced by MDS (www.mds.com)
+
+config  LCP1500 
+	bool "MDS LCP-1500"
+	select WINNT
+	select PNX1500
+	help
+	  A PCI Plug-in Development Cards for PNX1500 Nexperia Digital Media Processors 
+	  produced by MDS(www.mds.com)
+
+endchoice
+
+choice  
+	prompt "Byte order"
+	default LITTLE_ENDIAN
+
+config  LITTLE_ENDIAN
+	bool "Little endian"
+	help
+	  Little endian
+
+config  BIG_ENDIAN
+	bool "Big endian"
+	help
+	  Big endian
+
+endchoice
+
+choice
+	prompt "Float point bits"
+	default FP32
+
+config  FP32
+	bool "32 bits"
+	help
+	  32 bits float point support.
+
+config  FP64
+	bool "64 bits"
+	help
+	  64 bits float point emulation support.
+
+endchoice
+
+#
+# FIXME: I don't like it and will remove it assa.
+#
+choice 
+	prompt "Build Type variables"
+	default TMTGTREL_ASSERT
+
+config TMTGTREL_RETIAL
+	bool "retial"
+
+config TMTGTREL_ASSERT
+	bool "assert"
+
+config TMTGTREL_TRACE
+	bool "trace"
+
+config TMTGTREL_DEBUG
+	bool "debug"
+
+endchoice
+
+config TMJTAGMON
+	bool "TriMedia Jtag monitor support"
+	depends on NOHOST
+	default n
+	help
+	  Enable the jtag monitor support for standalone board. 
+
+config TMDBG_BUF_SIZE
+	int "Buffer size for trimedia debug mechanism(Kbytes)"
+	depends on !TMTGTREL_RETIAL
+	range 4 10
+	default 4
+	help
+	  Buffer size for trimedia debug mechanism (Kbytes)
+
+config  4KSTACKS
+	bool "Each Task has 4K kernel stack"
+	default n
+	help
+	  Enable 4K kernel stack for every task.
+
+config TRIMEDIA_DP
+	bool "TriMedia DP mechanism"
+	default n
+	help
+	  Enble TriMedia debug print mechanism support
+
+config TRIMEDIA_DPSIZE
+	int "TriMedia DP buffer size(Kbyte)"
+	depends on TRIMEDIA_DP
+	default 64
+	range 16 128
+	help
+	  Specify the buffer size used by TriMedia DP.
+
+config FORCE_CHECK
+	bool "Force check"
+	default n
+	help
+	  Enable force check.	
+
+source "mm/Kconfig"
+
+endmenu
+
+menu "Boot options"
+
+config CMDLINE
+        string "Default kernel command string"
+        default ""
+        help
+          On TriMedia, there is currently no way for the boot loader to pass 
+	  arguments to the kernel. For these architectures, you should supply 
+          some command-line options at build time by entering them here. 
+          As a minimum, you should specify the memory size and the root device 
+          (e.g., mem=64M root=/dev/nfs).
+
+config MEMSIZE
+	int "System memory size(Mbyte)"
+	default 256
+	help
+	  Board's memory size for Linux kernel.
+
+config CPU_FREQ
+	int "CPU Tick Rate"
+	default 150000000
+	help
+	  Board's CPU tick rate.
+
+config DYNLOAD
+	bool "Enable Load appliations dynamically"
+	default y
+	help
+	  To enable the linux kernel load applications dynamically.
+
+config PAGE_OFFSET
+	hex "Memory address offset"
+	default 0
+	help
+	  Memory address offset for the kernel, for ttisim it usually is 0, for winnt host-side mode,
+	  it is 0xe4000000 on LCP-1500 board.
+
+endmenu
+
+config ISA_DMA_API
+	bool
+	depends on !M5272
+	default y
+
+menu "Bus options (PCI, PCMCIA, EISA, MCA, ISA)"
+
+config PCI
+	bool "PCI support"
+	help
+	  Support for PCI bus.
+
+config COMEMPCI
+	bool "CO-MEM lite PCI controller support"
+	depends on (M5307 || M5407)
+
+source "drivers/pci/Kconfig"
+
+source "drivers/pcmcia/Kconfig"
+
+source "drivers/pci/hotplug/Kconfig"
+
+endmenu
+
+menu "Executable file formats"
+
+source "fs/Kconfig.binfmt"
+
+endmenu
+
+menu "Power management options"
+
+config PM
+	bool "Power Management support"
+	help
+	  Support processor power management modes
+
+endmenu
+
+source "net/Kconfig"
+
+source "drivers/Kconfig"
+
+source "fs/Kconfig"
+
+source "arch/m68knommu/Kconfig.debug"
+
+source "security/Kconfig"
+
+source "crypto/Kconfig"
+
+source "lib/Kconfig"

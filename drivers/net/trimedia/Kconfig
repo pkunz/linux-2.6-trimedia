@@ -1,0 +1,11 @@
+#
+# Trimedia network device configration for NXP on-chip hardware support
+#
+config NXP_LAN100
+	bool "NXP LAN100 network device support"
+	default n
+	depends on NET_ETHERNET && TRIMEDIA && !TTISIM && ! OLD_TMSIM
+	help 
+	  If you wish to use LAN100 ethernet of PNX15xx/PNX17xx, then you should
+          always answer Y to this.
+
