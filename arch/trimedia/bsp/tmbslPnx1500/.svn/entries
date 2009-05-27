@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="329"
+   name=""
+   committed-date="2009-05-23T07:11:03.024341Z"
+   url="file:///home/svn/repos/linux/tags/release-20090424-01/arch/trimedia/bsp/tmbslPnx1500"
+   last-author="guohr"
+   kind="dir"
+   uuid="2250928c-6241-0410-b62f-b9c49c0413a8"
+   repos="file:///home/svn/repos"
+   revision="335"/>
+</wc-entries>
